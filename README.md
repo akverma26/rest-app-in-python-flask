@@ -5,6 +5,6 @@ __app.py__ is the main app file.
 
 Run this Flask App by `python app.py`
 
-For more info read [Documention PDF  :page_facing_up:](https://google.com)
+For more info read [Documention PDF  :page_facing_up:](https://github.com/akverma26/REST-App-in-Python-Flask-for-Coral-Block-Chain/blob/master/Documentation.pdf)
 
 ![Flask](http://flask.pocoo.org/static/logo/flask.png)
