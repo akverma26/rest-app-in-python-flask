@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Coral BlockChain</title>
+	
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+	<script src="{{ url_for('static', filename='validation.js') }}"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<script>
+		window.onload = function() {
+			document.getElementById('username').value='';
+			document.getElementById('password').value='';
+			document.getElementById('email').value='';
+			document.getElementById('phone').value='';
+			document.getElementById('autocomplete-items').style.display='none';
+		};
+	</script>
+	
+</head>
+<body>
+
+
+
+<div class="main-content">
+
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			{% for message in messages %}
+				<div id="flash"">
+				<span style="flex: 1; text-align: center;">{{ message }}</span>
+				<span style="font-size: 10px; text-align: right; padding: 0 10px 0 10px; font-weight: bold; cursor: pointer;" onclick="hide()">X</span></a>
+				</div>
+
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+
+	<div class="logo"><img class="logo-image" src="{{ url_for('static', filename='bg.png') }}"></div>
+
+	<div class="title">Form for Inserting Data</div>
+
+	<form name="data" action="" method="post" onsubmit="return form_submit({{allUsers}})">
+		<div class="form-element">
+			<label for="fname">User Name *</label>
+			<input type="text" id="username" name="username" placeholder="Ankit Kumar (maxlength 25)" id="fname" maxlength="25" oninput="username_validation()" onclick="criteria_display(this.id)">
+		</div>
+		<div class="criteria" id="username_criteria">min length should be 3</div>
+
+		<div class="form-element" style="margin-bottom: 1px;">
+			<label for="password">Password *</label>
+			<input type="password" name="password" placeholder="Password (maxlength 50)" id="password" maxlength="50" onclick="criteria_display(this.id)" oninput="password_validation()">
+		</div>
+		<div>
+			<input type="checkbox" id="encrypt" name="encrypt"><span class="criteria" style="margin-left: 10px; color: black; font-size: 12px; display: inline-block;">Encrypt the Password (Hashing will be Done Before saving)</span>
+		</div>
+		
+		<div class="criteria" id="password_criteria">Password should contain 
+			<span id="capital"><br>atleast one capital letter, </span>
+			<span id="small"><br>atleast one small letter, </span>
+			<span id="digit"><br>atleast one digit, </span>
+			<span id="special"><br>atleast one special character (@,#,!,%,&),</span>
+			<span id="pass_length"><br>atleast 8 characters</span></div>
+
+		<div class="form-element">
+			<label for="email">Email ID *</label>
+			<input type="text" name="email" placeholder="user@email.com (maxlength 50)" maxlength="50" id="email" onclick="criteria_display(this.id)" oninput="email_validation()">
+		</div>
+		<div class="criteria" id="email_criteria">Invalid Email</div>
+
+		<div class="form-element">
+			<label for="phone">Phone No. *</label>
+			<input type="text" name="phone" placeholder="9876543210 (maxlength 10)" id="phone" maxlength="10" onclick="criteria_display(this.id)" oninput="phone_validation()">
+		</div>
+		<div class="criteria" id="phone_criteria">Invalid Phone</div>
+
+		<div style="display: flex;">
+			<div style="margin: auto;">
+				<input class="submit" style="text-transform: uppercase; cursor: pointer;" type="submit" name="submit" id="submit" value="Insert Data" >
+			</div>
+			
+		</div>
+		
+		
+		
+	</form>
+
+	<div id="OR">OR</div>
+
+	<form action="" method="post" autocomplete="off">
+
+		<div class="autocomplete">
+
+			<input onclick="init({{allUsers}})" id="search_input" type="text" name="search" placeholder="Search Data by Email-ID" style="width: 100%; box-sizing: border-box;" oninput="auto_complete(this.id)">
+			<div id="autocomplete-items">
+				<table id="suggestion">
+				</table>
+			</div>
+
+		</div>
+		<div class="criteria" style="display: block; margin-top: 4px;">*Search "ALL" (in Capital) for all Data.</div>
+		<input class="submit" type="submit" name="submit" id="search_button" value="Search Data" style="width: 100%; cursor: pointer;">	
+	</form>
+
+	{% if data %}
+
+		<table>
+			<tr>
+				<th>User Name</th>
+				<th>Email ID</th>
+				<th>Phone No.</th>
+				<th>Time</th>
+				<th>Password</th>
+			</tr>
+			{% if userDetails %}
+			{% for user in userDetails %}
+				<tr>
+				{% for elem in user %}
+					
+						<td>{{elem}}</td>
+				{% endfor %}
+				</tr>
+			{% endfor %}
+			{% else %}
+				<tr>
+					<td colspan="5">No Match Found.</td>
+				</tr>
+			{% endif %}
+
+		</table>
+
+	{% endif %}
+	
+
+</div>
+
+</body>
+</html>
