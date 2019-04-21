@@ -2,10 +2,14 @@
 <html>
 <head>
 	<title>Coral BlockChain</title>
+
+	<!-- 		----LINKING CSS AND JS FILE----		 -->
 	
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 	<script src="{{ url_for('static', filename='validation.js') }}"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- 		----ALL THE INPUT FIELDS SHOULD BE EMPTY ON RELOAD OR LOAD----		 -->
 	<script>
 		window.onload = function() {
 			document.getElementById('username').value='';
@@ -19,9 +23,11 @@
 </head>
 <body>
 
-
+<!-- 		----MAIN CONTENT FROM HERE----		 -->
 
 <div class="main-content">
+
+	<!-- 		----FLASH MESSGAE TO BE SHOWN WHEN DATA IS INSERTED OR UPDATED----		 -->
 
 	{% with messages = get_flashed_messages() %}
 		{% if messages %}
@@ -35,23 +41,51 @@
 		{% endif %}
 	{% endwith %}
 
+
+
+
+
+	<!-- 		----CORAL BLOCKCHAIN LOGO AND TITLE----		 -->
+
 	<div class="logo"><img class="logo-image" src="{{ url_for('static', filename='bg.png') }}"></div>
 
 	<div class="title">Form for Inserting Data</div>
 
+
+
+
+
+	<!-- 		----FORM FOR DATA TO BE INSERTED IN DATABASE----		 -->
+
 	<form name="data" action="" method="post" onsubmit="return form_submit({{allUsers}})">
+
+
+
+
+		<!-- 		----User Name Input Field----		 -->
 		<div class="form-element">
+
 			<label for="fname">User Name *</label>
+
 			<input type="text" id="username" name="username" placeholder="Ankit Kumar (maxlength 25)" id="fname" maxlength="25" oninput="username_validation()" onclick="criteria_display(this.id)">
 		</div>
+
 		<div class="criteria" id="username_criteria">min length should be 3</div>
 
+
+
+		
+		<!-- 		----Password Input Field----		 -->
 		<div class="form-element" style="margin-bottom: 1px;">
+
 			<label for="password">Password *</label>
+
 			<input type="password" name="password" placeholder="Password (maxlength 50)" id="password" maxlength="50" onclick="criteria_display(this.id)" oninput="password_validation()">
 		</div>
+
 		<div>
-			<input type="checkbox" id="encrypt" name="encrypt"><span class="criteria" style="margin-left: 10px; color: black; font-size: 12px; display: inline-block;">Encrypt the Password (Hashing will be Done Before saving)</span>
+			<input type="checkbox" id="encrypt" name="encrypt">
+			<span class="criteria" style="margin-left: 10px; color: black; font-size: 12px; display: inline-block;">Encrypt the Password (Hashing will be Done Before saving)</span>
 		</div>
 		
 		<div class="criteria" id="password_criteria">Password should contain 
@@ -61,19 +95,39 @@
 			<span id="special"><br>atleast one special character (@,#,!,%,&),</span>
 			<span id="pass_length"><br>atleast 8 characters</span></div>
 
+
+
+
+
+		<!-- 		----Email ID Input Field----		 -->
 		<div class="form-element">
+
 			<label for="email">Email ID *</label>
+
 			<input type="text" name="email" placeholder="user@email.com (maxlength 50)" maxlength="50" id="email" onclick="criteria_display(this.id)" oninput="email_validation()">
 		</div>
+
 		<div class="criteria" id="email_criteria">Invalid Email</div>
 
+
+
+
+		<!-- 		----Phone Number Input Field----		 -->
 		<div class="form-element">
+
 			<label for="phone">Phone No. *</label>
+
 			<input type="text" name="phone" placeholder="9876543210 (maxlength 10)" id="phone" maxlength="10" onclick="criteria_display(this.id)" oninput="phone_validation()">
 		</div>
+
 		<div class="criteria" id="phone_criteria">Invalid Phone</div>
 
+
+
+
+		<!-- 		----Submit Button for Submitting Data----		 -->
 		<div style="display: flex;">
+
 			<div style="margin: auto;">
 				<input class="submit" style="text-transform: uppercase; cursor: pointer;" type="submit" name="submit" id="submit" value="Insert Data" >
 			</div>
@@ -81,29 +135,52 @@
 		</div>
 		
 		
-		
 	</form>
+
+
+
+
+
+	<!-- 		----FORM FOR EMAIL ID TO BE SEARCHED----		 -->
 
 	<div id="OR">OR</div>
 
 	<form action="" method="post" autocomplete="off">
 
+
+
+		<!-- 		----Email ID Input Field----		 -->
 		<div class="autocomplete">
 
 			<input onclick="init({{allUsers}})" id="search_input" type="text" name="search" placeholder="Search Data by Email-ID" style="width: 100%; box-sizing: border-box;" oninput="auto_complete(this.id)">
+
+
+
+			<!-- 		----Suggestion Drop Box using Table----		 -->
 			<div id="autocomplete-items">
 				<table id="suggestion">
 				</table>
 			</div>
 
 		</div>
+
+
+
+		<!-- 		----Note for ALL Data in one Search----		 -->
 		<div class="criteria" style="display: block; margin-top: 4px;">*Search "ALL" (in Capital) for all Data.</div>
 		<input class="submit" type="submit" name="submit" id="search_button" value="Search Data" style="width: 100%; cursor: pointer;">	
+
 	</form>
+
+
+
+
+	<!-- 		----DISPLAYING RESULT FOR THE SEARCHED EMAIL ID IN THE FORM TABLE USING JINJA2----		 -->
 
 	{% if data %}
 
 		<table>
+
 			<tr>
 				<th>User Name</th>
 				<th>Email ID</th>
@@ -111,15 +188,22 @@
 				<th>Time</th>
 				<th>Password</th>
 			</tr>
+
+
 			{% if userDetails %}
-			{% for user in userDetails %}
-				<tr>
-				{% for elem in user %}
-					
-						<td>{{elem}}</td>
+
+				<!-- 		----For each user one Row----		 -->
+				{% for user in userDetails %}
+					<tr>
+					{% for elem in user %}
+						
+							<td>{{elem}}</td>
+					{% endfor %}
+					</tr>
 				{% endfor %}
-				</tr>
-			{% endfor %}
+
+
+			<!-- 		----If No Result Found Message:NO MATCH FOUND----		 -->	
 			{% else %}
 				<tr>
 					<td colspan="5">No Match Found.</td>
@@ -129,6 +213,9 @@
 		</table>
 
 	{% endif %}
+
+
+
 	
 
 </div>
